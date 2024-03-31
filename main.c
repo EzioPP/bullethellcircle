@@ -12,6 +12,7 @@
 #include "define.h"
 #include "init.h"
 #include "structs.h"
+#include "menu.h"
 
 typedef struct {
     int32_t x;
@@ -86,17 +87,20 @@ typedef struct {
     int32_t y;
     int32_t radius;
 } Life;
-Life life[10]; //era pra ter 11 mas por alguma maldiçao de satanas tem sempre 1 a menos
-int remaining = 10;
+
+Life life[10]; //era pra ter 11 mas por alguma maldiçao tem sempre 1 a menos
 int WinMain(int argc, char *argv[])
 {
     App app = init();
+    if(menu(&app) == 1) {
+        return 0;
+    }
     for (int i = 0; i < 10; i++) {
         life[i].x = 50;
         life[i].y = 50;
         life[i].radius = 25;
     }
-
+    int remaining = 10;
     recover = 0;
     int KFPS = 1000/ MAX_FPS;
     Player player; //player é estatico, pq fds n da pra fazer um jogo com 2 players
@@ -122,6 +126,8 @@ int WinMain(int argc, char *argv[])
         circles[i].speed = randomNum(3, 8);
         circles[i].angle = randomNum(0, 360);
     }
+
+
 
     while (running)
 
@@ -153,8 +159,14 @@ int WinMain(int argc, char *argv[])
                         case SDLK_RIGHT:
                             player.right = 1;
                             break;
+                        case SDLK_ESCAPE:
+                            running = 0;
+                            break;
+
+
                         default:
                             break;
+
                     }
                     break;
                 case SDL_KEYUP:

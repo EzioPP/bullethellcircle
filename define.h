@@ -9,6 +9,7 @@
 #define SCREEN_HEIGHT 1080
 #define MAX_FPS 60 //foda
 #define CIRCLES 50
+#define FULLSCREEN false
 
 
 #endif //A_DEFINE_H
