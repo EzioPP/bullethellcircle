@@ -7,6 +7,7 @@
 #include "SDL2/SDL_ttf.h"
 #include "structs.h"
 #include "define.h"
+#include "utils.h"
 
 
 App init(void)
@@ -28,9 +29,16 @@ App init(void)
 
 }
 
-SDL_Texture *renderText(App *app, char *text) {
+SDL_Texture *renderText(App *app, char *text, bool isRGB) {
     TTF_Font* BAUHS93 = TTF_OpenFont("BAUHS93.TTF", 24);
     SDL_Color colorWhite = {255, 255, 255};
+    SDL_Color colorRgb = {randomColor(), randomColor(),    randomColor()};
+    if (isRGB) {
+        SDL_Surface* surfaceMessage =
+                TTF_RenderText_Solid(BAUHS93, text, colorRgb);
+        SDL_Texture* Message = SDL_CreateTextureFromSurface(app->renderer, surfaceMessage);
+        return Message;
+    }
     SDL_Surface* surfaceMessage =
             TTF_RenderText_Solid(BAUHS93, text, colorWhite);
     SDL_Texture* Message = SDL_CreateTextureFromSurface(app->renderer, surfaceMessage);

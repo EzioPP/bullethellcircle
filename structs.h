@@ -13,19 +13,23 @@ typedef struct {
     int32_t x;
     int32_t y;
     int32_t radius;
+} Circle;
+typedef struct {
+    Circle circle;
     float speed;
     float angle;
+}Enemy;
 
-} Circle;
 
 typedef struct {
-    int32_t x;
-    int32_t y;
-    int32_t w;
+    Circle circle;
     int up;
     int down;
     int left;
     int right;
     bool isTouching;
 } Player;
+typedef struct {
+    Circle circle;
+} Life;
 #endif //A_STRUCTS_H

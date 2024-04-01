@@ -7,6 +7,7 @@
 #include "structs.h"
 #include "init.h"
 #include "define.h"
+#include "utils.h"
 typedef struct {
     int up;
     int down;
@@ -73,21 +74,31 @@ int menu(App *app) {
 
         SDL_SetRenderDrawColor(app->renderer, 0, 0, 0, 255);
         SDL_RenderClear(app->renderer);
-        SDL_SetRenderDrawColor(app->renderer, 255, 255, 255, 255);
+        SDL_SetRenderDrawColor(app->renderer, 255,255, 255, 255);
         SDL_Rect choice = {SCREEN_WIDTH/2 - 100, chooser.pos, 200, 100};
         SDL_RenderDrawRect(app->renderer, &choice);
 
         SDL_Rect title = {SCREEN_WIDTH/2 - 250, 50, 500, 200};
-        SDL_Texture *Message = renderText(app, "Autism 1");
+
+        SDL_SetRenderDrawColor(app->renderer, randomColor(), randomColor(), randomColor(), randomColor());
+        SDL_Texture *Message = renderText(app, "Autism 1",true);
         SDL_RenderCopy(app->renderer, Message, NULL, &title);
+        SDL_SetRenderDrawColor(app->renderer, 255, 255, 255, 255);
+
         SDL_Rect tip = {SCREEN_WIDTH/2 - 150, 600, 300, 100};
-        SDL_Texture *Message0 = renderText(app, "Press Enter to select an option");
+        SDL_SetRenderDrawColor(app->renderer, randomColor(), randomColor(), randomColor(), randomColor());
+        SDL_Texture *Message0 = renderText(app, "Press Enter to select an option",true);
         SDL_RenderCopy(app->renderer, Message0, NULL, &tip);
+
+
         SDL_Rect play = {SCREEN_WIDTH/2 - 100, 300, 100, 100};
-        SDL_Texture *Message2 = renderText(app, "Play");
+        SDL_Texture *Message2 = renderText(app, "Play",true);
+        SDL_SetRenderDrawColor(app->renderer, randomColor(), randomColor(), randomColor(), randomColor());
         SDL_RenderCopy(app->renderer, Message2, NULL, &play);
+
         SDL_Rect exit = {SCREEN_WIDTH/2 - 100, 400, 100, 100};
-        SDL_Texture *Message3 = renderText(app, "Exit");
+        SDL_Texture *Message3 = renderText(app, "Exit",true);
+        SDL_SetRenderDrawColor(app->renderer, randomColor(), randomColor(), randomColor(), randomColor());
         SDL_RenderCopy(app->renderer, Message3, NULL, &exit);
 
 

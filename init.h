@@ -6,5 +6,5 @@
 #define A_INIT_H
 #include "structs.h"
 App init(void);
-SDL_Texture *renderText(App *app, char *text);
+SDL_Texture *renderText(App *app, char *text, bool isRGB);
 #endif //A_INIT_H

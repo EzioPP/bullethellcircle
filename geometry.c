@@ -4,7 +4,7 @@
 
 #include "geometry.h"
 #include "SDL2/SDL.h"
-void draw_circle(SDL_Renderer * renderer, int32_t centreX, int32_t centreY, int32_t radius, int type)
+void draw_circle(SDL_Renderer * renderer, Circle circle, int type)
 {   if(type == 1) {
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     } else if (type == 0) {
@@ -13,9 +13,9 @@ void draw_circle(SDL_Renderer * renderer, int32_t centreX, int32_t centreY, int3
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     }
 
-    const int32_t diameter = (radius * 2);
+    const int32_t diameter = (circle.radius * 2);
 
-    int32_t x = (radius - 1);
+    int32_t x = (circle.radius - 1);
     int32_t y = 0;
     int32_t tx = 1;
     int32_t ty = 1;
@@ -24,14 +24,14 @@ void draw_circle(SDL_Renderer * renderer, int32_t centreX, int32_t centreY, int3
     while (x >= y)
     {
         //  Each of the following renders an octant of the circle
-        SDL_RenderDrawPoint(renderer, centreX + x, centreY - y);
-        SDL_RenderDrawPoint(renderer, centreX + x, centreY + y);
-        SDL_RenderDrawPoint(renderer, centreX - x, centreY - y);
-        SDL_RenderDrawPoint(renderer, centreX - x, centreY + y);
-        SDL_RenderDrawPoint(renderer, centreX + y, centreY - x);
-        SDL_RenderDrawPoint(renderer, centreX + y, centreY + x);
-        SDL_RenderDrawPoint(renderer, centreX - y, centreY - x);
-        SDL_RenderDrawPoint(renderer, centreX - y, centreY + x);
+        SDL_RenderDrawPoint(renderer, circle.x + x, circle.y - y);
+        SDL_RenderDrawPoint(renderer, circle.x + x, circle.y + y);
+        SDL_RenderDrawPoint(renderer, circle.x - x, circle.y - y);
+        SDL_RenderDrawPoint(renderer, circle.x - x, circle.y + y);
+        SDL_RenderDrawPoint(renderer, circle.x + y, circle.y - x);
+        SDL_RenderDrawPoint(renderer, circle.x + y, circle.y + x);
+        SDL_RenderDrawPoint(renderer, circle.x - y, circle.y - x);
+        SDL_RenderDrawPoint(renderer, circle.x - y, circle.y + x);
 
         if (error <= 0)
         {
@@ -46,5 +46,11 @@ void draw_circle(SDL_Renderer * renderer, int32_t centreX, int32_t centreY, int3
             tx += 2;
             error += (tx - diameter);
         }
+    }
+}
+
+        void draw_circle_array(SDL_Renderer * renderer, Circle circles[], int type, int size) {
+    for (int i = 0; i < size; i++) {
+        draw_circle(renderer, circles[i], type);
     }
 }

@@ -14,17 +14,8 @@
 #include "structs.h"
 #include "menu.h"
 
-Circle circles[CIRCLES];
-
-
-
+Enemy enemies[CIRCLES];
 int recover;
-typedef struct {
-    int32_t x;
-    int32_t y;
-    int32_t radius;
-} Life;
-
 Life life[10]; //era pra ter 11 mas por alguma maldiçao tem sempre 1 a menos
 int WinMain(int argc, char *argv[])
 {
@@ -33,17 +24,18 @@ int WinMain(int argc, char *argv[])
         return 0;
     }
     for (int i = 0; i < 10; i++) {
-        life[i].x = 50;
-        life[i].y = 50;
-        life[i].radius = 25;
+        life[i].circle.x = 10 + i * 30;
+        life[i].circle.y = 10;
+        life[i].circle.radius = 10;
     }
     int remaining = 10;
     recover = 0;
     int KFPS = 1000/ MAX_FPS;
     Player player; //player é estatico, pq fds n da pra fazer um jogo com 2 players
     memset(&player, 0, sizeof(Player));
-    player.x = SCREEN_WIDTH / 2;
-    player.y = SCREEN_HEIGHT * 0.75;
+    player.circle.x = SCREEN_WIDTH / 2;
+    player.circle.y = SCREEN_HEIGHT * 0.75;
+    player.circle.radius = 25;
 
 
     if (app.window == NULL || app.renderer == NULL)
@@ -56,12 +48,12 @@ int WinMain(int argc, char *argv[])
     bool running = true;
     SDL_Event event;
 
-    for (int i = 0; i < 50; i++) {
-        circles[i].x = randomNum(0, SCREEN_WIDTH);
-        circles[i].y = randomNum(0, 0);
-        circles[i].radius = randomNum(10, 50);
-        circles[i].speed = randomNum(3, 8);
-        circles[i].angle = randomNum(0, 360);
+    for (int i = 0; i < CIRCLES; i++) {
+        enemies[i].circle.x = randomNum(0, SCREEN_WIDTH);
+        enemies[i].circle.y  = randomNum(0, 0);
+        enemies[i].circle.radius = randomNum(10, 50);
+        enemies[i].speed = randomNum(3, 8);
+        enemies[i].angle = randomNum(5, 280);
     }
 
 
@@ -69,6 +61,7 @@ int WinMain(int argc, char *argv[])
     while (running)
 
     {
+
         printf("%d\n", recover);
         if(player.isTouching) {
            color = 255;
@@ -130,36 +123,36 @@ int WinMain(int argc, char *argv[])
 
         }
         if (player.up) {
-            player.y -= 5;
+            player.circle.y -= 5;
         }
         if (player.down) {
-            player.y += 5;
+            player.circle.y += 5;
         }
         if (player.left) {
-            player.x -= 5;
+            player.circle.x -= 5;
         }
         if (player.right) {
-            player.x += 5;
+            player.circle.x += 5;
         }
 
         SDL_SetRenderDrawColor(app.renderer, color, 0, 0, 255);
         SDL_RenderClear(app.renderer);
-        draw_circle(app.renderer, player.x, player.y, 25, 1);
-        renderCircle(circles, app.renderer, CIRCLES, 0);
+        draw_circle(app.renderer, player.circle, 1);  //todo realmente n sei oq esta acontecendo aq
+        draw_circle_array(app.renderer, &enemies[CIRCLES-1].circle, 0, CIRCLES);
 
 
 
-        if (detectCollision(circles, &player, &recover)) {
+        if (detectCollision(&enemies[CIRCLES-1].circle, &player, &recover)) {
             player.isTouching = true;
             remaining--;
         } else {
             player.isTouching = false;
         }
 
-        for (int i = 0; i < remaining; i++) {
-            draw_circle(app.renderer, life[i].x + (i *50), life[i].y, life[i].radius, 2);
-        }
-        moveCircle(circles, SCREEN_WIDTH, SCREEN_HEIGHT);
+        draw_circle_array(app.renderer, &life[2].circle, 2, 10);
+
+        moveCircle(enemies, CIRCLES);
+
 
 
 
